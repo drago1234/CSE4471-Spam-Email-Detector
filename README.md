@@ -39,14 +39,18 @@ In this project, our goal is to design a spam email detector, which is able to t
 - The Baseline model:
 With 20 epochs of training, we notice as the training accuracy increases the validation accuracy starts falling down, and it’s an obvious sign of Overfitting. To solve this problem, there are some other techniques that I tried for the improved model: 1) Use the dropout after the final Dense layer. 2) Use the Bidirectional LSTM layer.
 ![result](result.png)
+
 - The Baseline model:
 With 20 epochs of training, we notice as the training accuracy increases the validation accuracy starts falling down, and it’s an obvious sign of Overfitting. To solve this problem, there are some other techniques that I tried for the improved model: 1) Use the dropout after the final Dense layer. 2) Use the Bidirectional LSTM layer.
 ![result](result_improved.png)
+
 - Visualization in TensorFlow Projector:
 Embedding is the idea of representing texts as vectors in a vector space, here is the vector space of our model showing in the figure below. The original embedding dimension that I initialized was 16, however after being compressed with the PCA algorithm we are able to see it in a 3D simulated space. There are many other visualization methods we could try as well, such as t-SNE and UMAP.
 ![visualization](visualization01.png)
+
 Looking at the Figures, the Embedding word vector space shows the location of words like “click”, “free”, “offer” and “fill” are clustering together moving to the left, so we can infer that there is a higher chance of seeing those words in a spam email.
 ![visualization](visualization02.png)
+
 Similarly, Looking at the right side of Embedding vector space, the words that clustering at the right are more likely being drawn from non-spam email, and they indeed have more positive meaning than previous and feeling less suspicious.
 ![visualization](visualization03.png)
 
