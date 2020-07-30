@@ -38,6 +38,7 @@ In this project, our goal is to design a spam email detector, which is able to t
 ## Result:
 - The Baseline model:
 With 20 epochs of training, we notice as the training accuracy increases the validation accuracy starts falling down, and it’s an obvious sign of Overfitting. To solve this problem, there are some other techniques that I tried for the improved model: 1) Use the dropout after the final Dense layer. 2) Use the Bidirectional LSTM layer. 
+
 ![result](result.png)
 
 - The Baseline model:
