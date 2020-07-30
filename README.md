@@ -24,20 +24,32 @@ In this project, our goal is to design a spam email detector, which is able to t
   - The common way for encoding the text is using ASCII(American Standard Code for Information Interchange), but the problem with that is the semantic of words and the orders are not encoded, so it can be a heavy burden task for training a neural network. Tokenizer is a text tokenization utility class that is embedded within tensorflow.keras.preprocessing.text namespace. It did a lot of heavy lifting tasks for us, such as converting text into a stream of tokens, removing the punctuation like space and comma, and uniforming the sequence to have the same length. With the help of Tokenizer, we can encode our text sentence into a stream of sequences and feed it into a neural network.
 - Part6: Model Design
   - The learning architecture that I designed for training this spam email detector is pretty simple, which can be described in the order of following layers: Embedding layer with 16 embedding dimension, Bidirectional GRU, Bidirectional LSTM, Global Max Pooling, Dense layer with 16 neurons and Relu as activation functions, Dropout layer, and finally a Dense layer with single neuron and sigmoid activation functions. All this can be simply visualized by the following sequential model summary:
-  
+  ![model](model.png)
   - Beside the overall structure, there are couple techniques I think it’s worth to point out:
     - Word Embedding: People spend a lot of half a century figuring out a successful way to represent words and keep their semantics meaningful. The most popular and promising way to represent those words is called word embedding. A word embedding is mapped each word to a vector representation where words that have the similar meaning should have a closer relationship in a predefined vector space. (Note the number of features is much smaller than the size of vocabulary. It a dense distributed representation contrast to the sparse representation with one-hot encoding)[5]
     - LSTM: The basic RNN model is simple. However, It only allows us to look at the recent information to perform current tasks and have trouble in making connections to any further context. The primary reason that LSTM became so popular and important to use is because it provides the solution to this Long-Term Dependencies problem, which allows earlier words to be carried to later one via a cell state, and here is the structure of LSTM block in the figure below:[6]
-
-
-  
+    ![result](LSTM.png)
+    - GRU: GRU(Gated Recurrent Unit) is a variance of LSTM. It merges the “forget gate” and “input gater” into a single “update gate”, which makes it simpler than the original version of LSTM, and here is the structure of GRU block in the figure below: [6]
+    ![GRU](GRU.png)
+    - Sigmoid: Quoted from Cola’s own words: “The sigmoid layer outputs numbers between zero and one, describing how much of each component should be let through. A value of zero means “let nothing through,” while a value of one means “let everything through!” “ [6]
+    - Dropout layer: Dropout is a regularization technique to reduce the Overfitting problem. The idea of dropout is to randomly discard the number of neurons in a network layer. The dropout rate usually was set between 0 and 1, which indicates percent of neurons to drop. The larger the dropout rate the larger the number of neurons will be discarded. 
 
 
 ## Result:
 - The Baseline model:
 With 20 epochs of training, we notice as the training accuracy increases the validation accuracy starts falling down, and it’s an obvious sign of Overfitting. To solve this problem, there are some other techniques that I tried for the improved model: 1) Use the dropout after the final Dense layer. 2) Use the Bidirectional LSTM layer.
+![result](result.png)
 - The Baseline model:
 With 20 epochs of training, we notice as the training accuracy increases the validation accuracy starts falling down, and it’s an obvious sign of Overfitting. To solve this problem, there are some other techniques that I tried for the improved model: 1) Use the dropout after the final Dense layer. 2) Use the Bidirectional LSTM layer.
+![result](result_improved.png)
+- Visualization in TensorFlow Projector:
+Embedding is the idea of representing texts as vectors in a vector space, here is the vector space of our model showing in the figure below. The original embedding dimension that I initialized was 16, however after being compressed with the PCA algorithm we are able to see it in a 3D simulated space. There are many other visualization methods we could try as well, such as t-SNE and UMAP.
+![visualization](visualization01.png)
+Looking at the Figures, the Embedding word vector space shows the location of words like “click”, “free”, “offer” and “fill” are clustering together moving to the left, so we can infer that there is a higher chance of seeing those words in a spam email.
+![visualization](visualization02.png)
+Similarly, Looking at the right side of Embedding vector space, the words that clustering at the right are more likely being drawn from non-spam email, and they indeed have more positive meaning than previous and feeling less suspicious.
+![visualization](visualization03.png)
+
 
 ## Future work:
 There are also a couple methods that are worth trying if we want to get a better performance for the spam email detector. Firstly, we could try to tune our hyperparameter, such as size of word corpus, embedding dimension, regularization methods, optimizer etc. Second, we could try some word-level pre-trained model, such as Word2Vec and Glove, and use that to fine-tune the model. Third, beside the word-level embedding, we could also use the character-level embedding, and there are several pre-train character-level models available to try, such as ELMo, and Flair embedding.
